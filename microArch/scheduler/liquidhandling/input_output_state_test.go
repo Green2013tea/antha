@@ -2,7 +2,6 @@ package liquidhandling
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -291,16 +290,6 @@ func TestBeforeVsAfterMixInPlace(t *testing.T) {
 	expected["water+dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "water", CNameF: "water+dna_part", VolI: 100.0, VolF: 140.0}}
 
 	compareInitFinalStates(t, lh, expected)
-	fmt.Println("BEFORE")
-	for _, p := range lh.Properties.Plates {
-		fmt.Println(p.PlateName)
-		p.OutputLayout()
-	}
-	fmt.Println("AFTER")
-	for _, p := range lh.FinalProperties.Plates {
-		fmt.Println(p.PlateName)
-		p.OutputLayout()
-	}
 }
 
 func TestBeforeVsAfterAutoAllocateDest(t *testing.T) {
