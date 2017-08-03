@@ -2,6 +2,7 @@ package liquidhandling
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -36,7 +37,6 @@ func getComponents(ctx context.Context, t *testing.T) (cmp1, cmp2 *wtype.LHCompo
 	return
 }
 
-/*
 func TestBeforeVsAfterUserPlateMixInPlace(t *testing.T) {
 	ctx := testinventory.NewContext(context.Background())
 	rq := makeRequest()
@@ -55,9 +55,10 @@ func TestBeforeVsAfterUserPlateMixInPlace(t *testing.T) {
 
 	pl2.Cols[0][0].Add(cmp1)
 	pl2.Cols[0][1].Add(cmp2)
+	smp := mixer.Sample(pl2.Cols[0][1].WContents, wunit.NewVolume(44.0, "ul"))
 
 	mo := mixer.MixOptions{
-		Components: []*wtype.LHComponent{cmp1, cmp2},
+		Components: []*wtype.LHComponent{pl2.Cols[0][0].WContents, smp},
 	}
 
 	ins := mixer.GenericMix(mo)
@@ -79,24 +80,12 @@ func TestBeforeVsAfterUserPlateMixInPlace(t *testing.T) {
 
 	expected := make(map[string][]initFinalCmp)
 
-	expected["dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "dna_part", CNameF: "dna_part", VolI: 50.0, VolF: 5.0}}
+	expected["dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "dna_part", CNameF: "dna_part", VolI: 50.0, VolF: 5.5}}
 
-	expected["water+dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "water", CNameF: "water+dna_part", VolI: 100.0, VolF: 144.5}}
+	expected["water+dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "water", CNameF: "water+dna_part", VolI: 100.0, VolF: 144.0}}
 
 	compareInitFinalStates(t, lh, expected)
-
-	fmt.Println("BEFORE")
-	for _, p := range lh.Properties.Plates {
-		fmt.Println(p.PlateName)
-		p.OutputLayout()
-	}
-	fmt.Println("AFTER")
-	for _, p := range lh.FinalProperties.Plates {
-		fmt.Println(p.PlateName)
-		p.OutputLayout()
-	}
 }
-*/
 
 func TestBeforeVsAfterUserPlateDest(t *testing.T) {
 	ctx := testinventory.NewContext(context.Background())
@@ -265,7 +254,6 @@ func TestBeforeVsAfterUserPlate(t *testing.T) {
 	compareInitFinalStates(t, lh, expected)
 }
 
-/*
 func TestBeforeVsAfterMixInPlace(t *testing.T) {
 	ctx := testinventory.NewContext(context.Background())
 	rq := makeRequest()
@@ -275,9 +263,10 @@ func TestBeforeVsAfterMixInPlace(t *testing.T) {
 
 	cmp1.Vol = 100.0
 	cmp2.Vol = 50.0
+	smp := mixer.Sample(cmp2, wunit.NewVolume(40.0, "ul"))
 
 	mo := mixer.MixOptions{
-		Components: []*wtype.LHComponent{cmp1, cmp2},
+		Components: []*wtype.LHComponent{cmp1, smp},
 	}
 
 	ins := mixer.GenericMix(mo)
@@ -297,9 +286,9 @@ func TestBeforeVsAfterMixInPlace(t *testing.T) {
 
 	expected := make(map[string][]initFinalCmp)
 
-	expected["dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "dna_part", CNameF: "dna_part", VolI: 50.0, VolF: 5.0}}
+	expected["dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "dna_part", CNameF: "dna_part", VolI: 45.5, VolF: 5.0}}
 
-	expected["water+dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "water", CNameF: "water+dna_part", VolI: 100.0, VolF: 144.5}}
+	expected["water+dna_part"] = []initFinalCmp{initFinalCmp{CNameI: "water", CNameF: "water+dna_part", VolI: 100.0, VolF: 140.0}}
 
 	compareInitFinalStates(t, lh, expected)
 	fmt.Println("BEFORE")
@@ -313,7 +302,7 @@ func TestBeforeVsAfterMixInPlace(t *testing.T) {
 		p.OutputLayout()
 	}
 }
-*/
+
 func TestBeforeVsAfterAutoAllocateDest(t *testing.T) {
 	ctx := testinventory.NewContext(context.Background())
 	rq := makeRequest()

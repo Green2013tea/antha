@@ -136,7 +136,6 @@ func ImprovedExecutionPlanner(ctx context.Context, request *LHRequest, robot *li
 }
 
 func canaggregate(agg []int, cmp string, outorder []string, cmps map[string]*wtype.LHInstruction) bool {
-
 	if len(agg) == 0 {
 		return true
 	}
