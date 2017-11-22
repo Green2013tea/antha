@@ -123,8 +123,6 @@ func sourceVolumesOK(srcs []wtype.ComponentVector, dests wtype.ComponentVector) 
 
 	result := subHash(collSrcs, collDsts)
 
-	fmt.Printf("result %v", result)
-
 	return result.AllVolsPosOrZero()
 }
 
@@ -172,8 +170,6 @@ func (lhp *LHProperties) GetComponents(opt GetComponentsOptions) (GetComponentsR
 
 	currCmps := opt.Cmps.Dup()
 	done := false
-
-	fmt.Printf("srcs %v currcmps %v", srcs, currCmps)
 
 	for {
 		done = areWeDoneYet(currCmps)
